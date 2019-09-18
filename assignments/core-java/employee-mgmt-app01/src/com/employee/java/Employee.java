@@ -1,3 +1,4 @@
+package com.employee.java;
 
 public class Employee {
 	String name;
@@ -54,6 +55,10 @@ public class Employee {
 	@Override
 	public String toString() {
 		return "Employee Details:\n id= " + id + "\n name= " + name + "\n age= " + age + "\n Total designation=" + design + "\n department= " + dept + "\n country= " + country+ "\n";
+	}
+	
+	public String exportString() {
+		return id+","+name+","+age+","+design+","+dept+","+country;
 	}
 		
 
