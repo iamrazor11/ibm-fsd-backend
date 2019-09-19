@@ -1,12 +1,19 @@
 package com.employee.service;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 import com.employee.java.Employee;
 import java.util.ArrayList;
 import java.io.*;
 import java.util.List;
 import java.util.Scanner;
 
-public class EmpService{
+
+
+public class EmpService implements Callable<Object>{
 	public List<Employee> empList = new ArrayList<Employee>();
 	public void getInput() throws IOException {
 		Scanner sc=new Scanner(System.in);
@@ -38,11 +45,27 @@ public class EmpService{
 					viewAll();
 					break;
 				case 6:
-					imported();
-					break;
+				ExecutorService e= Executors.newFixedThreadPool(7);
+				Future<Boolean> f=e.submit(new Callable<Boolean>() {
+						public Boolean call() throws RuntimeException, IOException {
+							System.out.print("Thread : "+Thread.currentThread().getName());
+							imported();
+							return true;
+						}
+					});
+					e.shutdown();
+					break; 
 				case 7:
-					exporter();
-					break;
+					ExecutorService e2= Executors.newFixedThreadPool(7);
+					Future<Boolean> f2=e2.submit(new Callable<Boolean>() {
+							public Boolean call() throws IOException {
+								System.out.print("Thread : "+Thread.currentThread().getName());
+								exporter();
+								return true;
+							}
+						});
+					e2.shutdown();
+						break;
 				case 10:
 					System.out.println("Exiting...");
 					break;
@@ -128,10 +151,8 @@ public class EmpService{
 		});
 	}
 	
-	public void imported() throws IOException {
+	public void imported() throws RuntimeException, IOException {
 		BufferedReader in = null;
-		
-		try {
 			in = new BufferedReader(new FileReader("C:\\Training\\input.txt"));
 			String buf;
 			while((buf=in.readLine())!=null) {
@@ -142,31 +163,25 @@ public class EmpService{
 				empList.add(newEmp);
 			}
 				
-		}
-		finally {
-		
-		
-	}
 	}
 	public void exporter() throws IOException{
 	//BufferedWriter out=null;
 	 //PrintWriter out = null;
 		String str;
-	try {
 		final PrintWriter out = new PrintWriter(new FileWriter("C:\\Training\\output.txt"));
 		empList.forEach(e->{
 			System.out.println(e.exportString());
-			out.write(e.exportString()+":::");
-			//out.write("\n");
+			out.write(e.exportString());
+			//out.write('\r\n');
+			out.write("\r\n");
 			
 		});
 		out.flush();
-	}finally {
-		
 	}
+	@Override
+	public Object call() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
-		
-	
-	
-
 }
+		
