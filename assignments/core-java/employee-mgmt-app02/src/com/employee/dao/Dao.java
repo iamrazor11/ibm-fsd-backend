@@ -1,25 +1,18 @@
 package com.employee.dao;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
-
-import javax.sql.RowSet;
-import javax.sql.rowset.JdbcRowSet;
-
 import com.employee.java.Employee;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 
 public class Dao {
-
+public static int flag=0;
 //	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 //	static final String DB_URL = "jdbc:mysql://localhost:3306/jdbctraining";
 //	// Database credentials
@@ -38,18 +31,34 @@ public class Dao {
 	dataSource.setUser("training");
 	dataSource.setPassword("training");
 	dataSource.setServerName("localhost");
+	if(flag==0) {
+	System.out.println("Connecting...");
+	try {
+		conn = dataSource.getConnection();
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	try {
+		conn.setAutoCommit(true);
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	System.out.println("Connection Established: "+conn);
+	}
 	}
 	public void insert(Employee e){
 		
 		try {
-		System.out.println("Connecting...");
-		conn = dataSource.getConnection();
-		conn.setAutoCommit(true);
-		System.out.println("Connection Established: "+conn);
-		
-		System.out.println("Creating statement...");
-		//stmt = conn.createStatement();
-		
+//		System.out.println("Connecting...");
+//		conn = dataSource.getConnection();
+//		conn.setAutoCommit(true);
+//		System.out.println("Connection Established: "+conn);
+//		
+//		System.out.println("Creating statement...");
+//		//stmt = conn.createStatement();
+		flag++;
 		String query1="insert into EmployeeData (id,name,designation,department,country) values (?,?,?,?,?)";
 		pstmt=conn.prepareStatement(query1);
 		pstmt.setInt(1, e.getId());
@@ -68,14 +77,14 @@ public class Dao {
 }	
 	public void delete(int e) {
 		try {
-			System.out.println("Connecting...");
-			conn = dataSource.getConnection();
-			conn.setAutoCommit(true);
-			System.out.println("Connection Established: "+conn);
-			
-			System.out.println("Creating statement...");
-			//stmt = conn.createStatement();
-			
+//			System.out.println("Connecting...");
+//			conn = dataSource.getConnection();
+//			conn.setAutoCommit(true);
+//			System.out.println("Connection Established: "+conn);
+//			
+//			System.out.println("Creating statement...");
+//			//stmt = conn.createStatement();
+			flag++;
 			String query1="delete from EmployeeData where id=?";
 			pstmt=conn.prepareStatement(query1);
 			pstmt.setInt(1, e);
@@ -93,14 +102,14 @@ public class Dao {
 	
 	public void displayAll() {
 		try {
-			System.out.println("Connecting...");
-			conn = dataSource.getConnection();
-			conn.setAutoCommit(true);
-			System.out.println("Connection Established: "+conn);
-			
-			System.out.println("Creating statement...");
-			//stmt = conn.createStatement();
-			
+//			System.out.println("Connecting...");
+//			conn = dataSource.getConnection();
+//			conn.setAutoCommit(true);
+//			System.out.println("Connection Established: "+conn);
+//			
+//			System.out.println("Creating statement...");
+//			//stmt = conn.createStatement();
+			flag++;
 			String query1="select * from EmployeeData";
 			pstmt=conn.prepareStatement(query1);
 			
@@ -138,14 +147,14 @@ System.out.println();
 	
 	public void display(int e) {
 		try {
-			System.out.println("Connecting...");
-			conn = dataSource.getConnection();
-			conn.setAutoCommit(true);
-			System.out.println("Connection Established: "+conn);
-			
-			System.out.println("Creating statement...");
-			//stmt = conn.createStatement();
-			
+//			System.out.println("Connecting...");
+//			conn = dataSource.getConnection();
+//			conn.setAutoCommit(true);
+//			System.out.println("Connection Established: "+conn);
+//			
+//			System.out.println("Creating statement...");
+//			//stmt = conn.createStatement();
+			flag++;
 			String query1="select * from EmployeeData where id=?";
 			pstmt=conn.prepareStatement(query1);
 			pstmt.setInt(1, e);
@@ -185,14 +194,14 @@ System.out.println();
 	
 	public void update(int id, Employee e) {
 		try {
-			System.out.println("Connecting...");
-			conn = dataSource.getConnection();
-			conn.setAutoCommit(true);
-			System.out.println("Connection Established: "+conn);
-			
-			System.out.println("Creating statement...");
-			//stmt = conn.createStatement();
-			
+//			System.out.println("Connecting...");
+//			conn = dataSource.getConnection();
+//			conn.setAutoCommit(true);
+//			System.out.println("Connection Established: "+conn);
+//			
+//			System.out.println("Creating statement...");
+//			//stmt = conn.createStatement();
+			flag++;
 			String query1="update EmployeeData set id=?,name=?,designation=?,department=?,country=? where id=? ";
 			pstmt=conn.prepareStatement(query1);
 			pstmt.setInt(1, e.getId());
@@ -214,14 +223,14 @@ System.out.println();
 	public ArrayList<Employee> export() {
 		try {
 			ArrayList<Employee> empList=new ArrayList<Employee>();
-			System.out.println("Connecting...");
-			conn = dataSource.getConnection();
-			conn.setAutoCommit(true);
-			System.out.println("Connection Established: "+conn);
-			
-			System.out.println("Creating statement...");
-			//stmt = conn.createStatement();
-			
+//			System.out.println("Connecting...");
+//			conn = dataSource.getConnection();
+//			conn.setAutoCommit(true);
+//			System.out.println("Connection Established: "+conn);
+//			
+//			System.out.println("Creating statement...");
+//			//stmt = conn.createStatement();
+			flag++;
 			String query1="select * from EmployeeData";
 			pstmt=conn.prepareStatement(query1);
 			
@@ -259,6 +268,9 @@ System.out.println();
 		}
 		return null;
 
+	}
+	{
+		
 	}
 
 
